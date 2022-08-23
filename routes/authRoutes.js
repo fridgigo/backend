@@ -6,15 +6,15 @@ const validator = require('express-joi-validation').createValidator({});
 
 // Login Schema
 const loginSchema = Joi.object({
-    email: Joi.string().email(),
-    password: Joi.string().min(6).max(12),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(6).max(12).required(),
 });
 
 // Register Schema
 const registerSchema = Joi.object({
-    email: Joi.string().email(),
-    password: Joi.string().min(6).max(12),
-    fullname: Joi.string().min(3),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(6).max(12).required(),
+    fullname: Joi.string().min(3).required(),
 })
 
 /* 
