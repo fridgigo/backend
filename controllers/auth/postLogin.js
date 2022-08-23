@@ -13,6 +13,7 @@ const postLogin = async(req, res, next) => {
                 statusCode: res.statusCode,
                 message: "Please enter a valid email.",
             });
+            return;
         } else if (!validation.isAlphanumeric(password) && !password) {
             res.json({
                 status: false,
