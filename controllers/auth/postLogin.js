@@ -1,40 +1,39 @@
-const User = require("../../models/User")
+const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const postLogin = async(req, res, next) => {
+const postLogin = async (req, res, next) => {
+  try {
     const { email, password } = req.body;
 
-    // check if the user exists in db
-    const promise = User.findOne({ email });
-    promise
-        .then((data) => {
-            bcrypt.compare(password, data.password, (err, result) => {
-                if (err) throw err;
-                if (result) {
-                    // generate a json web token
-                    const payload = { email };
-                    const token = jwt.sign(payload, req.app.get("api_secret_key"), {
-                        expiresIn: 96768, // for a week
-                    });
+    const user = await User.findOne({ email });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      // send a token
+      // create JWT
+      const token = jwt.sign(
+        {
+          userId: (await user)._id,
+          email: (await user).email,
+        },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "24h",
+        }
+      );
 
-                    res.json({
-                        status: true,
-                        statusCode: res.statusCode,
-                        token: token,
-                    });
-                } else {
-                    res.json({
-                        status: false,
-                        statusCode: res.statusCode,
-                        message: "Password is wrong",
-                    });
-                }
-            });
-        })
-        .catch((err) => {
-            res.json({ status: false, statusCode: res.statusCode, message: "Unfortunately, the user was not found." });
-        });
+      return res.status(200).json({
+        userDetails: {
+          fullname: user.fullname,
+          email: user.email,
+          token,
+        },
+      });
+    }
+
+    return res.status(400).send("Invalid credentials. Please try again.");
+  } catch (e) {
+    return res.status(500).send("Something went wrong. Please try again.");
+  }
 };
 
 module.exports = postLogin;

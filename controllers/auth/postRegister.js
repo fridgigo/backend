@@ -1,5 +1,7 @@
 const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const postRegister = async (req, res, next) => {
   try {
@@ -23,19 +25,27 @@ const postRegister = async (req, res, next) => {
       repeat_password: encryptedPassword,
     });
 
-    // create JWT
-    const token = "JW TOKEN";
+    // generate JWT
+    const token = jwt.sign(
+      {
+        userId: (await user)._id,
+        email: (await user).email,
+      },
+      process.env.TOKEN_KEY,
+      {
+        expiresIn: "24h"
+      }
+    );
 
     res.status(201).json({
       userDetails: {
-        fullname: user.fullname,
-        email: user.email,
+        fullname: (await user).fullname,
+        email: (await user).email,
         token,
-        password: user.password
-      }
+      },
     });
   } catch (e) {
-    return res.status(500).send('Error occured. Please try again.')
+    return res.status(500).send("Error occured. Please try again.");
   }
 };
 

@@ -4,7 +4,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 require("dotenv").config();
-const config = require('./config');
 const cors = require('cors');
 
 
@@ -21,9 +20,6 @@ const app = express();
 
 // connect to db
 const db = require('./helpers/db')();
-
-// jwt config setuo
-app.set('api_secret_key', config.secret_key);
 
 app.use(logger('dev'));
 app.use(express.json());
