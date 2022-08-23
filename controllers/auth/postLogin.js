@@ -1,27 +1,10 @@
-const User = require("../../models/User");
-const validation = require("validator");
+const User = require("../../models/User")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const postLogin = async(req, res, next) => {
     const { email, password } = req.body;
     if (email && password) {
-        // checking for email and password validity
-        if (!validation.isEmail(email) || !email) {
-            res.json({
-                status: false,
-                statusCode: res.statusCode,
-                message: "Please enter a valid email.",
-            });
-            return;
-        } else if (!validation.isAlphanumeric(password) && !password) {
-            res.json({
-                status: false,
-                statusCode: res.statusCode,
-                message: "Please enter a valid password.",
-            });
-        }
-
         // check if the user exists in db
         const promise = User.findOne({ email });
         promise
@@ -50,7 +33,7 @@ const postLogin = async(req, res, next) => {
                 });
             })
             .catch((err) => {
-                res.json({ status: false, statusCode: res.statusCode, err });
+                res.json({ status: false, statusCode: res.statusCode, message: "Unfortunately, the user was not found." });
             });
     } else {
         res.json({
