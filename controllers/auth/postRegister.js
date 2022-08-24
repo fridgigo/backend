@@ -33,7 +33,7 @@ const postRegister = async (req, res, next) => {
       },
       process.env.TOKEN_KEY,
       {
-        expiresIn: "24h"
+        expiresIn: "604800"
       }
     );
 

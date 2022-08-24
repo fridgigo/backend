@@ -1,28 +1,42 @@
 const express = require("express");
 const router = express.Router();
-const authControllers = require('../controllers/auth/authControllers');
-const Joi = require('joi');
-const validator = require('express-joi-validation').createValidator({});
+const authControllers = require("../controllers/auth/authControllers");
+const Joi = require("joi");
+const validator = require("express-joi-validation").createValidator({});
+const auth = require("../middleware/auth");
 
 // Login Schema
 const loginSchema = Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().min(6).max(12).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).max(12).required(),
 });
 
 // Register Schema
 const registerSchema = Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().min(6).max(12).required(),
-    repeat_password: Joi.string().min(6).max(12).required(),
-    fullname: Joi.string().min(3).required(),
-})
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).max(12).required(),
+  repeat_password: Joi.string().min(6).max(12).required(),
+  fullname: Joi.string().min(3).required(),
+});
 
 /* 
     POST authenticate => signin
     POST register => signup
 */
-router.post("/authenticate", validator.body(loginSchema), authControllers.controllers.postLogin);
-router.post("/register", validator.body(registerSchema), authControllers.controllers.postRegister);
+router.post(
+  "/authenticate",
+  validator.body(loginSchema),
+  authControllers.controllers.postLogin
+);
+router.post(
+  "/register",
+  validator.body(registerSchema),
+  authControllers.controllers.postRegister
+);
+
+// test middleware
+router.get("/test", auth, (req, res) => {
+  res.json({ status: true, message: "hello world" });
+});
 
 module.exports = router;
