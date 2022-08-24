@@ -34,9 +34,4 @@ router.post(
   authControllers.controllers.postRegister
 );
 
-// test middleware
-router.get("/test", auth, (req, res) => {
-  res.json({ status: true, message: "hello world" });
-});
-
 module.exports = router;
