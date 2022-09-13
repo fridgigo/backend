@@ -10,10 +10,10 @@ const postRegister = async (req, res, next) => {
     // check if user exists
     const userExists = await User.exists({ email });
     if (userExists) {
-      return res.status(409).send("Email alrady in use.");
+      return res.status(409).json({ statusMessage: "Email alrady in use." });
     }
     if (password != repeat_password) {
-      return res.status(409).send("Password doesn't match.");
+      return res.status(409).json({ statusMessage: "Password doesn't match." });
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
@@ -33,7 +33,7 @@ const postRegister = async (req, res, next) => {
       },
       process.env.TOKEN_KEY,
       {
-        expiresIn: "604800"
+        expiresIn: "604800",
       }
     );
 
@@ -45,7 +45,9 @@ const postRegister = async (req, res, next) => {
       },
     });
   } catch (e) {
-    return res.status(500).send("Error occured. Please try again.");
+    return res
+      .status(500)
+      .json({ statusMessage: "Error occured. Please try again." });
   }
 };
 

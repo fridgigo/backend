@@ -12,10 +12,10 @@
 
 ### **_Users_**
 
-| Route                        | HTTP Request |                          Body                           | Description                        |
-| :--------------------------- | :----------: | :-----------------------------------------------------: | :--------------------------------- |
-| `/api/v2/users/authenticate` |    `POST`    |              `{email:foo, password: bar}`               | Authenticate user (login function) |
-| `/api/v2/users/register`     |    `POST`    | `{fullname, email:foo, password: bar, password_repeat}` | Register user (signup function)    |
+| Route                        | HTTP Request |                      Body                      | Description                        |
+| :--------------------------- | :----------: | :--------------------------------------------: | :--------------------------------- |
+| `/api/v2/users/authenticate` |    `POST`    |          `{email:foo, password: bar}`          | Authenticate user (login function) |
+| `/api/v2/users/register`     |    `POST`    | `{fullname, email, password, password_repeat}` | Register user (signup function)    |
 
 <hr>
 

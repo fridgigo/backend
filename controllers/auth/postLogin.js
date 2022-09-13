@@ -30,9 +30,13 @@ const postLogin = async (req, res, next) => {
       });
     }
 
-    return res.status(400).send("Invalid credentials. Please try again.");
+    return res
+      .status(400)
+      .json({ statusMessage: "Invalid credentials. Please try again." });
   } catch (e) {
-    return res.status(500).send("Something went wrong. Please try again.");
+    return res
+      .status(500)
+      .json({ statusMessage: "Something went wrong. Please try again." });
   }
 };
 
