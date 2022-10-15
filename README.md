@@ -2,6 +2,7 @@
 
 > This is the backend of fridgiGO. This backend was developed in the programming language JavaScript and framework express.js.
 
+
 ## Below is the list of developed API endpoints
 
 ### **_Pings_**
