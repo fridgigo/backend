@@ -19,9 +19,16 @@ const registerSchema = Joi.object({
   fullname: Joi.string().min(3).required(),
 });
 
+// Confirm password Schema
+const confirmSchema = Joi.object({
+  email: Joi.string().email().required(),
+  confirmationNumber: Joi.number().integer().positive().min(100000).max(999999).required(),
+});
+
 /* 
     POST authenticate => signin
     POST register => signup
+    POST confirm => confirm account
 */
 router.post(
   "/authenticate",
@@ -33,5 +40,10 @@ router.post(
   validator.body(registerSchema),
   authControllers.controllers.postRegister
 );
+router.put(
+  "/confirm-register",
+  validator.body(confirmSchema),
+  authControllers.controllers.postConfirm
+)
 
 module.exports = router;

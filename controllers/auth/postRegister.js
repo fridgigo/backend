@@ -51,7 +51,6 @@ const postRegister = async (req, res, next) => {
       },
     });
   } catch (e) {
-    console.log(e)
     return res
       .status(500)
       .json({ statusMessage: "Error occured. Please try again." });
